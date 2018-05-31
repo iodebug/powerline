@@ -10,7 +10,7 @@
 // ==/UserScript==
 
 var evilJSRegex = /SpaceWars/;
-var replacementJSUrl = "https://raw.githubusercontent.com/iodebug/powerline/master/powerline.js";
+var replacementJSUrl = "https://raw.githubusercontent.com/iodebug/powerline/master/custom.js";
 
 function removeInlineJS(e) {
     if (evilJSRegex.test(e.target.innerText)) {
