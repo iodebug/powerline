@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         powerline.io
 // @namespace    http://tampermonkey.net/
-// @version      0.5
+// @version      0.6
 // @description  Replaces inline JS on powerline.io
 // @author       Shaun Mitchell <guy#4962>
 // @match        *://powerline.io/*
