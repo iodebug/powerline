@@ -13,6 +13,7 @@ var qC;
 var nC;
 var frozen = false;
 var lastDirection = 1;
+var ctx = null;
 
 function Powerline(s, x, k) {
     game = this;
@@ -248,9 +249,6 @@ function Powerline(s, x, k) {
             y: a
         }
     }
-    console.log("s var:", s);
-    console.log("s.location:", s.location);
-    console.log("s.location.protocol:", s.location.protocol);
     var nb = s.location.href.split("/"),
         Sa = nb[2],
         mc = Sa.split(".");
@@ -735,7 +733,6 @@ function Powerline(s, x, k) {
                         console.log("Snakes: " + g + ", Sum: " + f);
                         console.log("Arena Size: " + da / 10)
                     }
-                    console.log("turning a:", a);
                     B ? (e = B.x, f = B.y, g = db, 38 == d.keyCode || 87 == d.keyCode ? 1 != a.direction && 3 != a.direction && 0 != a.direction && (a.direction = 1, a.turn(a.direction, e, f, g, 0)) : 37 == d.keyCode || 65 == d.keyCode ? 2 != a.direction && 4 != a.direction && 0 != a.direction && (a.direction = 2, a.turn(a.direction, e, f,
                         g, 0)) : 40 == d.keyCode || 83 == d.keyCode ? 3 != a.direction && 1 != a.direction && 0 != a.direction && (a.direction = 3, a.turn(a.direction, e, f, g, 0)) : 39 != d.keyCode && 68 != d.keyCode || 4 == a.direction || 2 == a.direction || 0 == a.direction || (a.direction = 4, a.turn(a.direction, e, f, g, 0))) : Ga && (e = .01, d.shiftKey && (e = .1), 38 == d.keyCode ? z.zoom += e : 40 == d.keyCode && (z.zoom -= e), console.log(z.zoom), console.log(da / 10));
                     (70 == d.keyCode && !d.shiftKey) ? (x.fullscreenElement || x.mozFullScreenElement || x.webkitFullscreenElement || x.msFullscreenElement ? x.exitFullscreen ? x.exitFullscreen() :
@@ -1463,13 +1460,15 @@ function Powerline(s, x, k) {
                 var d;
                 d = (a - 8) / 22 * .8;.8 < d && (d = .8);
                 d = 1 + d;
+                b.save();
+                b.globalAlpha = 0.35;
                 b.scale(d, d);
                 b.translate(0, -4 * d);
                 t.frames.skullback.draw(b);
                 0 == e ? (t.frames.skullbase.draw(b), t.frames.skullglow.draw(b), 8 < a && t.frames.skulleyesred.draw(b)) : 1 == e ? (t.skullDarkBlue.draw(b), t.skullDarkBlueGlow.draw(b), t.frames.skulleyesyellow.draw(b)) : 2 == e ? (t.skullPurple.draw(b), t.skullPurpleGlow.draw(b),
                     t.frames.skulleyesgreen.draw(b)) : 3 == e && (t.skullRed.draw(b), t.skullRedGlow.draw(b), t.frames.skulleyesblue.draw(b));
                 t.frames.skullgradient.draw(b);
-                b.fillStyle = "rgba(0, 200, 255, 1.0)";
+                b.fillStyle = "rgba(0, 200, 255, 0.75)";
                 b.font = "Bold 18px 'proxima-nova-1','proxima-nova-2', Arial";
                 b.shadowBlur = 5;
                 b.shadowColor = "rgba(0, 200, 255, 1.0)";
@@ -1477,6 +1476,7 @@ function Powerline(s, x, k) {
                 b.fillText(a, -e / 2, -30);
                 b.shadowBlur = 0;
                 b.scale(1 / d, 1 / d)
+                b.restore();
             };
             this.drawInfo = function(b) {
                 if (void 0 != this.headPos && !this.beingDeleted) {
@@ -1763,6 +1763,7 @@ function Powerline(s, x, k) {
             };
             this.drawAfter = function(b) {};
             this.draw = function(c) {
+                ctx = c;
                 c.save();
                 c.translate(this.x, this.y);
                 a += .05;
@@ -2212,7 +2213,6 @@ function Powerline(s, x, k) {
                 } else if (163 == b) f(e), objectCount = Object.keys(y).length, snakes = y, snake = snakes[clientID], x.title = 0 < objectCount && debug ? "powerline.io (" + Ua + ", " + objectCount + ")" : "powerline.io!";
                 else if (164 == b) a(e);
                 else if (165 == b)
-                    //console.log("processing message/" + b, d, e);
                     if (b = c(e), d = e.getUint16(b, !0), b += 2, 0 < d) {
                         d = e.getUint32(b, !0);
                         b += 4;
@@ -2586,6 +2586,7 @@ function Powerline(s, x, k) {
                 b.scale(c, c)
             };
             this.applyShake = function(a) {
+                return;
                 if (T)
                     if (0 < g) {
                         var c = e;
@@ -2623,6 +2624,7 @@ function Powerline(s, x, k) {
                 h.y = a
             };
             this.shake = function(b) {
+                return;
                 T && (g = 500, e = b)
             };
             this.getBounds = function() {
