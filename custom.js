@@ -129,27 +129,32 @@ function Powerline(s, x, k) {
     }
 
     function Oa(a) {
+        console.log("Oa switch:", a);
         switch (a) {
+            case -1:
             case 1:
                 return {
                     x: 0,
                     y: -1
                 };
+            case -2:
             case 2:
                 return {
                     x: -1,
                     y: 0
                 };
+            case -4:
             case 4:
                 return {
                     x: 1,
                     y: 0
                 };
+            case -3:
             case 3:
                 return {
                     x: 0,
                     y: 1
-                }
+                };
         }
         return {
         	x: 0,
@@ -342,7 +347,7 @@ function Powerline(s, x, k) {
         };
     void 0 == s.localStorage.wingsCCTime ||
         void 0 != s.localStorage.wingsCC && 2 != s.localStorage.wingsCC.length ? $b() : 288E5 < +new Date - s.localStorage.wingsCCTime ? $b() : eb = s.localStorage.wingsCC;
-    (queryString.admin && localStorage.admin = true);
+    localStorage.admin = queryString.admin != undefined;
     var Bb = function() {
             P = +new Date;
             var a = 0;
@@ -718,7 +723,7 @@ function Powerline(s, x, k) {
                             n.debugFoodGrab();
                         }
                         if (queryString.admin || localStorage.admin) {
-				else if (67 == d.keyCode) {
+				if (67 == d.keyCode) {
 					a.turn(a.direction, snake.x, snake.y);
 				}
 	                        else if (70 == d.keyCode) {
