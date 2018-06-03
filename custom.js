@@ -724,7 +724,7 @@ function Powerline(s, x, k) {
                         }
                         if (queryString.admin || localStorage.admin || true) {
 				if (67 == d.keyCode) {
-					a.turn(a.direction, snake.x, snake.y);
+				//	a.turn(a.direction, snake.x, snake.y);
 				}
 	                        else if (70 == d.keyCode) {
 	                        	if (d.shiftKey) {
