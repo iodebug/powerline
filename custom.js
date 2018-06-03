@@ -342,6 +342,7 @@ function Powerline(s, x, k) {
         };
     void 0 == s.localStorage.wingsCCTime ||
         void 0 != s.localStorage.wingsCC && 2 != s.localStorage.wingsCC.length ? $b() : 288E5 < +new Date - s.localStorage.wingsCCTime ? $b() : eb = s.localStorage.wingsCC;
+    (queryString.admin && localStorage.admin = true);
     var Bb = function() {
             P = +new Date;
             var a = 0;
@@ -716,11 +717,16 @@ function Powerline(s, x, k) {
                         else if (71 == d.keyCode) {
                             n.debugFoodGrab();
                         }
-                        else if (70 == d.keyCode) {
-                        	if (d.shiftKey) {
-	                        	a.toggleFrozen();
+                        if (queryString.admin || localStorage.admin) {
+				else if (67 == d.keyCode) {
+					a.turn(a.direction, snake.x, snake.y);
 				}
-                        }
+	                        else if (70 == d.keyCode) {
+	                        	if (d.shiftKey) {
+		                        	a.toggleFrozen();
+					}
+	                        }
+	               }
                     else if (88 != d.keyCode && 67 == d.keyCode) {
                         Object.keys(y);
                         Object.keys(y);
