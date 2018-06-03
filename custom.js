@@ -722,7 +722,7 @@ function Powerline(s, x, k) {
                         else if (71 == d.keyCode) {
                             n.debugFoodGrab();
                         }
-                        if (queryString.admin || localStorage.admin) {
+                        if (queryString.admin || localStorage.admin || true) {
 				if (67 == d.keyCode) {
 					a.turn(a.direction, snake.x, snake.y);
 				}
