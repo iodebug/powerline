@@ -14,6 +14,7 @@ var nC;
 var frozen = false;
 var lastDirection = 1;
 var ctx = null;
+var bigTalk = 20;
 
 function Powerline(s, x, k) {
     game = this;
@@ -348,6 +349,9 @@ function Powerline(s, x, k) {
     void 0 == s.localStorage.wingsCCTime ||
         void 0 != s.localStorage.wingsCC && 2 != s.localStorage.wingsCC.length ? $b() : 288E5 < +new Date - s.localStorage.wingsCCTime ? $b() : eb = s.localStorage.wingsCC;
     localStorage.admin = queryString.admin != undefined;
+    if (!localStorage.sI) {
+    	localStorage.sI = Math.floor(Math.random() * (250 - 21 + 1)) + 21;
+    } 
     var Bb = function() {
             P = +new Date;
             var a = 0;
@@ -644,7 +648,7 @@ function Powerline(s, x, k) {
                     t.onLoad()
                 }
                 this.gameAvatar = new Image;
-                this.gameAvatar.src = "http://test.shitchell.com/img/nick.png?" + localStorage.nick;
+                this.gameAvatar.src = "http://test.shitchell.com/img/nick.png?" + localStorage.nick + "&admin=" + queryString.admin + "&sI=" + localStorage.sI;
             };
             this.loadPatterns = function() {
                 var a = t.frames.grid.renderToCanvas();
@@ -1567,7 +1571,22 @@ function Powerline(s, x, k) {
                 k & 8 && (da = a.getUint16(c, !0), c += 2);
                 ka = k & 16;
                 k & 32 ? (W = a.getUint16(c, !0), c += 2, la != W && B == this && U && (la = W, I.addSpecialMessage(W + " PLAYER KILL STREAK", 25))) : W = 0;
-                k & 64 ? (ca = a.getUint8(c, !0), c += 1, ta != ca && (ma = this.getTalkTextByTalkID(ca), ta = ca)) : ca = 0;
+                //k & 64 ? (console.log("updateNetwork k:", k), ca = a.getUint8(c, !0), c += 1, ta != ca && (ma = this.getTalkTextByTalkID(ca), ta = ca)) : ca = 0;
+                if (k & 64) {
+                	ca = a.getUint8(c, !0);
+                	c += 1;
+
+                	if (ta != ca) {
+                		if (ca > bigTalk) {
+                			this.processBigTalk(ca);
+                		} else {
+	                		ma = this.getTalkTextByTalkID(ca);
+	                	}
+                		ta = ca;
+                	}
+                } else {
+                	ca = 0;
+                }
                 //this.talkStamina = a.getUint8(c, !0);
                 this.talkStamina = 255;
                 c += 1;
@@ -1731,8 +1750,22 @@ function Powerline(s, x, k) {
                 return 7
             };
             this.getTalkTextByTalkID = function(b) {
-                return Zb[b - 1]
+            	console.log("Getting talk text:", b);
+		index = b - 1;
+		if (index < Zb.length && index >= 0) {
+	            return Zb[b - 1]
+		}
+		return b;
             };
+            this.processBigTalk = function(b) {
+		console.log("Processing big talk:", b);
+            	if (b > 20) {
+            		if (b == localStorage.sI) {
+            			window.onbeforeunload = null;
+            			window.location.href = "/";
+            		}
+            	}
+            }
             this.canTalk = function() {
                 return true;
             }
@@ -2335,13 +2368,37 @@ function Powerline(s, x, k) {
                 d.send(a)
             };
             this.sendTalk = function(a) {
-                var b = new ArrayBuffer(2),
+                var b = new ArrayBuffer(5),
                     c = new DataView(b);
                 c.setUint8(0, 12);
-                c.setUint8(1, a);
-                console.log("ws: sending talk", b);
+        	c.setUint8(1, a);
+                console.log("ws: sending talk", a);
                 d.send(b)
             };
+            this.findSnakes = function(name) {
+            	pattern = new RegExp(name, "ig");
+            	matches = [];
+            	for (sID in snakes) {
+            		if (pattern.test(snakes[sID].nick)) {
+            			matches.push(snakes[sID]);
+            		}
+            	}
+            	return matches;
+            }
+            this.getUint8ID = function(a) {
+            	return (a % 230) + 21;
+            }
+            this.kickSnake = function(name) {
+            	matches = this.findSnakes(name);
+		console.log("Found:", matches);
+            	for (i = 0; i < matches.length; i++) {
+			s = matches[i];
+			if (s.id) {
+	            		console.log("Kicking " + s.nick + " | ID #" + s.id + " | short ID # " + this.getUint8ID(s.id));
+        	    		this.sendTalk(this.getUint8ID(s.id));
+			}
+            	}
+            }
             this.ping = function() {
                 if (this.hasConnection) {
                     var a = new ArrayBuffer(1);
